@@ -1,0 +1,5 @@
+This is a minimalistic API Server on top of the Flask microframework. It allows you to create RESTful controllers that output to a multitude of formats (json, xml etc.)
+
+Lacks advanced features like throttling and OAuth that you'd find in e.g. django-piston. This is not an active project. Code merely provided for your edification and/or scorn.
+
+Development sponsored by the University of Ghent.
