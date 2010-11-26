@@ -4,7 +4,7 @@
 Example Flask APIServer app.
 """
 
-from flask import Flask, abort, redirect
+from flask import Flask, request, abort, redirect
 import apiserver as api
 
 class Person(object):
@@ -20,13 +20,18 @@ class Person(object):
 
 class PersonController(api.RESTController):
     route = '/people/<name>/'
+    realm = 'people'
 
     def show(self, name):
+        user = request.environ["user"]
+
         if name not in ['Stan', 'Linn', 'Joseph']:        
             abort(404)
         output = Person(name)
-        output.sisters = [Person('Suzanne'), Person('Joanne')]
-        output.sisters[1].age = 33
+        # don't show personal information to any joe schmoe
+        if user.may_see(self, "restricted"):
+            output.sisters = [Person('Suzanne'), Person('Joanne')]
+            output.sisters[1].age = 33
         output.classes = ['Anthropology', 'Econ 101']
         return api.formatted_response(output, html_template='people/person.html', formats=['json', 'yaml', 'html', 'xml'])
 

@@ -11,3 +11,4 @@ apiserver/dispatch.py
 apiserver/serializers.py
 apiserver/tests/__init__.py
 apiserver/tests/app.py
+apiserver/tests/controllers.py

@@ -1,0 +1,13 @@
+---
+username: USER1
+# password: PASS1 (sha224 hash)
+password: 72127e4f480e4306b6c33689b46f001a33805231926d2f17bac767b1
+access:
+    people: restricted
+    departments: unrestricted
+---
+username: USER2
+# password: PASS2 (sha224 hash)
+password: b7fdcc77ac236ee22a01f22c0539b7a3048ddde1061181206474a0c2
+access:
+    people: public
