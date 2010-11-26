@@ -19,7 +19,7 @@ class Person(object):
         return self.__dict__
 
 class PersonController(api.RESTController):
-    route = '/people/<name>/'
+    route = '/people/<name>'
     realm = 'people'
 
     def show(self, name):
@@ -37,3 +37,11 @@ class PersonController(api.RESTController):
 
     def destroy(self):
         return 'Goodbye world'
+
+class PeopleController(api.RESTController):
+    route = '/people'
+    realm = 'people'
+    
+    @api.requires(realm, "unrestricted")
+    def show(self):
+        return api.formatted_response({})

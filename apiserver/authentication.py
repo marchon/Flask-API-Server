@@ -3,6 +3,7 @@
 from flask import Request, Response, request, abort
 from controllers import RESTController
 import hashlib
+from functools import wraps
 
 LEVELS = ["public", "restricted", "unrestricted"]
 
@@ -70,3 +71,16 @@ class AuthenticationMiddleware(object):
         else:
             environ["user"] = self.usermap[auth.username]
             return self.app(environ, start_response)
+
+class requires(object):
+    def __init__(self, realm, level):
+        self.realm = realm
+        self.level = level
+    
+    def __call__(self, view):
+        def decorated(*vargs, **kwargs):
+            if request.environ["user"].may_see(self.realm, self.level):
+                return view(*vargs, **kwargs)
+            else:
+                abort(403)
+        return decorated
