@@ -33,7 +33,11 @@ class PersonController(api.RESTController):
             output.sisters = [Person('Suzanne'), Person('Joanne')]
             output.sisters[1].age = 33
         output.classes = ['Anthropology', 'Econ 101']
-        return api.formatted_response(output, html_template='people/person.html', formats=['json', 'yaml', 'html', 'xml'])
+        return api.formatted_response(
+            output, 
+            html_template='people/person.html', 
+            formats=['json', 'yaml', 'html', 'xml']
+            )
 
     def destroy(self):
         return 'Goodbye world'

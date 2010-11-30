@@ -39,7 +39,10 @@ class Simplifier(object):
         return list(obj)
     
     def simplify_string(self, obj):
-        return unicode(obj)
+        try:
+            return unicode(obj)
+        except UnicodeDecodeError:
+            return obj
         
     def simplify_object(self, obj):
         if hasattr(obj, 'facade'):
