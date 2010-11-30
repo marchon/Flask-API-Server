@@ -54,6 +54,7 @@ Works on RESTController classes as well, in which case
 the class decorator will decorate the 'show', 'create', 
 'update' and 'destroy' methods.
 """
+
 class on_error(object):
     def __init__(self, exception, code):
         self.exception = exception
