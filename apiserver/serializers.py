@@ -2,6 +2,7 @@
 
 import simplejson
 import yaml
+from xml.sax.saxutils import escape
 from flask import render_template
 
 """
@@ -48,7 +49,7 @@ class Simplifier(object):
         if hasattr(obj, 'facade'):
             facade = obj.facade
         else:
-            attrs =  obj.__dict__
+            attrs =  dict(obj.__dict__)
             for attr in attrs.keys():
                 if attr.startswith('_'):
                     del attrs[attr]
@@ -76,7 +77,12 @@ simplify = Simplifier()
 
 class Resource(object):
     def __init__(self, obj):
-        self.obj = obj
+        self.original_obj = obj
+        # temp fix
+        try:
+            self.obj = simplify(obj)
+        except:
+            self.obj = obj
 
     # dead-simple serialization, because we want XML  
     # that completely mirrors the JSON output
@@ -98,7 +104,12 @@ class Resource(object):
             for key, value in self.obj.items():
                 out += Resource(value).to_xml(key, depth+1)
         else:
-            out += unicode(self.obj)
+            try:
+                string = unicode(self.obj)
+            except UnicodeDecodeError:
+                string = str(self.obj)
+            
+            out += escape(string)
         
         start_tabs = end_tabs = ''
         for i in range(depth):
@@ -111,7 +122,9 @@ class Resource(object):
         return simplejson.dumps(self.obj, indent=4)
     
     def to_html(self, template):
-        return render_template(template, **self.obj.__dict__)
+        # TO IMPROVE: 
+        # this expects a dictionary, which we're not very explicit about
+        return render_template(template, **self.original_obj)
     
     def to_yaml(self):
         def unicode_representer(dumper, data):
@@ -124,8 +137,7 @@ class Resource(object):
         return unicode(self.obj)
 
 def formatted_response(obj, html_template=None, formats=['xml', 'json', 'yaml']):
-    simple_obj = simplify(obj)
-    resource = Resource(simple_obj)
+    resource = Resource(obj)
     formatters = {
         'xml': resource.to_xml, 
         'json': resource.to_json, 
