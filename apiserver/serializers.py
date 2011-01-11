@@ -88,7 +88,7 @@ class Resource(object):
     # that completely mirrors the JSON output
     # (no attributes or other fancy stuff)        
     def to_xml(self, parent='item', depth=0):   
-        out = ''
+        out = u''
         simple = True
     
         if isinstance(self.obj, list):
@@ -116,7 +116,7 @@ class Resource(object):
             start_tabs += '    '
         if not simple:
             end_tabs = start_tabs
-        return '{0}<{1}>{2}{3}</{1}>\n'.format(start_tabs, parent, out, end_tabs)
+        return u'{0}<{1}>{2}{3}</{1}>\n'.format(start_tabs, parent, out, end_tabs)
         
     def to_json(self):
         return simplejson.dumps(self.obj, indent=4)

@@ -78,6 +78,7 @@ class requires(object):
         self.level = level
     
     def __call__(self, view):
+        @wraps(view)
         def decorated(*vargs, **kwargs):
             if request.environ["user"].may_see(self.realm, self.level):
                 return view(*vargs, **kwargs)

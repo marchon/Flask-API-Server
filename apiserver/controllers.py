@@ -15,7 +15,7 @@ class RESTController(object):
             'DELETE': getattr(self, 'destroy', None),           
         }
 
-    def __init__(self, app):    
+    def __init__(self, app):
         route = self.route.rstrip('/') + '.<format>'
         available_methods = [method for method in self.methods if self.methods[method] is not None]
 

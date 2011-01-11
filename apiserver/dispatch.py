@@ -3,6 +3,7 @@
 from flask import request, abort
 import types
 from functools import wraps
+import utils
 
 MIMETYPES = {
     'json': 'application/json',
@@ -29,6 +30,7 @@ In a nutshell, it works like this:
 """
 
 def format_dispatcher(app, view):
+    @utils.timed()
     def format_aware_view(**kwargs):
         format = kwargs['format']
         request.format = format
